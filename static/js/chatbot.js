@@ -13,7 +13,7 @@ function includecss(file,rel="stylesheet") {
     link.defer = true;
     document.getElementsByTagName('head').item(0).appendChild(link);
 }
-
+include('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js','head');
 includecss('./static/css/materialize.min.css');
 includecss('https://fonts.googleapis.com/icon?family=Material+Icons');
 includecss('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -80,7 +80,6 @@ else you remove the modal -->
 
 document.getElementById('chatbot').innerHTML = chatbothtml;
 
-include('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js','head');
 include('./static/js/lib/materialize.min.js');
 include('./static/js/lib/uuid.min.js');
 include('./static/js/script.js','body',true);

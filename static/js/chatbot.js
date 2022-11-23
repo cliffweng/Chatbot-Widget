@@ -1,3 +1,4 @@
+chatbot_name = "Rasa";
 function include(file,loc='body',defer=false) {
     const script = document.createElement('script');
     script.src = file;
@@ -30,7 +31,10 @@ else you remove the modal -->
 <div class="widget">
 <div class="chat_header">
  <!--Add the name of the bot here -->
- <span class="chat_header_title">Sara</span>
+ <div id="talkButton">
+  <i class="fa fa-microphone aria-hidden="true""></i>
+ </div>
+ <span class="chat_header_title"> ${chatbot_name}</span>
  <span class="dropdown-trigger" href="#" data-target="dropdown1">
    <i class="material-icons"> more_vert </i>
  </span>

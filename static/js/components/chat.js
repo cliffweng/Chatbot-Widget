@@ -1,3 +1,69 @@
+var synth = window.speechSynthesis;
+var voiceOn = false;
+var nowSpeaking = false;  // bot is talking
+var nowListening = false; // bot is listening
+
+function getPosition(string, subString, index) {
+  return string.split(subString, index).join(subString).length;
+}
+var recognition = null;
+var outputField = document.getElementById("userInput");
+
+function pauseListening(){
+  recognition.stop();
+};
+
+function startListening(){
+  if (!nowListening) {
+      recognition.start();
+  }
+  voiceOn = true;
+};
+
+function startSpeechRecognition() {
+
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+
+    recognition.onstart = function() {
+        nowListening = true;
+        outputField.value = "listening...";
+    };
+    
+    recognition.onend = function() {
+        outputField.value = "";
+        nowListening = false;
+        if (voiceOn && (! nowSpeaking)) {
+            startListening();
+        }
+    };
+        
+    // This runs when the speech recognition service returns result
+    recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        // var confidence = event.results[0][0].confidence;
+        outputField.value = transcript;
+        document.getElementById("sendButton").click();
+    };
+};
+
+startSpeechRecognition();
+
+// start listening when the page is loaded
+// window.onload = function() {
+//   startListening();
+// };
+
+// click event of talk button
+$("#talkButton").on("click", (e) => {
+    if (voiceOn) {
+        voiceOn = false;
+        pauseListening();
+    } else {
+        startListening();
+    }
+});
 /**
  * scroll to the bottom of the chats after new message has been added to chat
  */
@@ -97,6 +163,31 @@ function setBotResponse(response) {
             }
             // append the bot response on to the chat screen
             $(botResponse).appendTo(".chats").hide().fadeIn(1000);
+            spoken = response[i].text;
+            if (voiceOn) {
+                
+                if (spoken.length > max_spoken_length){
+                    n = getPosition(spoken, ".", spoken_no_sentences);
+                    if (n > max_spoken_length){
+                        n = getPosition(spoken, ".", spoken_no_sentences-1);
+                        if (n > max_spoken_length){
+                            n = max_spoken_length;
+                        }
+                    }
+                    spoken = response[i].text.substring(0,n);
+                }
+                var utterThis = new SpeechSynthesisUtterance(spoken);
+                // console.log("spoken: " + spoken);
+                utterThis.onend = function(event) {
+                    if (voiceOn) {
+                        nowSpeaking = false;
+                        startListening();
+                    }
+                }
+                pauseListening();
+                nowSpeaking = true;
+                synth.speak(utterThis);
+            }
           }
         }
 

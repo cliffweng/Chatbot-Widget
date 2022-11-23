@@ -186,8 +186,22 @@ blockquote {
   font-size: 20px;
   cursor: pointer;
   color: #060dcfc7;
+  display:inline;
 }
-
+#talkButton {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  float: left;
+  margin-right: 30px;
+  text-align: center;
+  padding: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #f3f6f8c7;
+  display:inline;
+}
 .imgProfile {
   box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 #00000096;
   border-radius: 50px;
